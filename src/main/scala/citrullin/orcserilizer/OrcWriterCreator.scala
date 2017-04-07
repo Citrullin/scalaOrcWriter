@@ -17,7 +17,7 @@ object OrcWriterCreator {
     *  @return a boolean. wasWriteSuccessful?. True -> yes, false -> no
     */
   def createWriter(path: String, structSchema: OrcStruct): OrcWriter = {
-    val schema: TypeDescription = OrcSchemaCretor.createTypeDescription(structSchema)
+    val schema: TypeDescription = OrcSchemaCreator.createTypeDescription(structSchema)
     val configuration: Configuration = new Configuration()
     val batch: VectorizedRowBatch = schema.createRowBatch()
 

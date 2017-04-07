@@ -6,7 +6,7 @@ import org.apache.orc.TypeDescription
 /**
   * Created by citrullin on 25.03.17.
   */
-object OrcSchemaCretor {
+object OrcSchemaCreator {
   def createTypeDescription(struct: OrcStruct): TypeDescription ={
     val typeDescription: TypeDescription = TypeDescription.createStruct()
 

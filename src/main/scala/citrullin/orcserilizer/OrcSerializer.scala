@@ -13,7 +13,7 @@ object OrcSerializer {
     *  @return the C schema
     */
   def createStringSchema(struct: OrcStruct):String =
-    OrcSchemaCretor.createTypeDescription(struct).toString
+    OrcSchemaCreator.createTypeDescription(struct).toString
 
   /** create a Orc Json Schema String with a given OrcStruct
     *
@@ -21,7 +21,7 @@ object OrcSerializer {
     *  @return the Json Schema
     */
   def createJsonSchema(struct: OrcStruct):String =
-    OrcSchemaCretor.createTypeDescription(struct).toJson
+    OrcSchemaCreator.createTypeDescription(struct).toJson
 
   /** create a Orc Java TypeDescription Schema with a given OrcStruct
     *
@@ -29,7 +29,7 @@ object OrcSerializer {
     *  @return the TypeDescription
     */
   def createTypeDescriptionSchema(struct: OrcStruct): TypeDescription =
-    OrcSchemaCretor.createTypeDescription(struct)
+    OrcSchemaCreator.createTypeDescription(struct)
 
   def createWriter(path: String, structSchema: OrcStruct): OrcWriter =
     OrcWriterCreator.createWriter(path, structSchema)
