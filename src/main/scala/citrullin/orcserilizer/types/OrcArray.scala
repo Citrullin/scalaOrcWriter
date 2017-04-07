@@ -17,6 +17,5 @@ class OrcArray(val list: AnyRef) extends OrcType{
     case value: Array[OrcType] => value.toList
     case value: Seq[OrcType] => value.toList
     case value: Iterable[OrcType] => value.toList
-    case value: Stream[OrcType] => value.toList
   }
 }
