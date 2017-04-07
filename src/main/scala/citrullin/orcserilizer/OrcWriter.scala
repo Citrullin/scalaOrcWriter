@@ -16,6 +16,8 @@ class OrcWriter(
                  path: String
                ) {
 
+  var rowBatchSize: Int = 0
+
   /** writes a list of OrcStructs into a Orc File
     *
     *  @param structList a list of orcStructs
@@ -47,7 +49,7 @@ class OrcWriter(
                ): List[Boolean] = {
 
     val rowResult: List[Boolean] = rows.map(value => {
-      writeRow(value, columnVectorList, batch.size)
+      writeRow(value, columnVectorList)
     })
 
     writer.close()
@@ -58,6 +60,7 @@ class OrcWriter(
       batch.cols = columnVectorList.toArray
       writer.addRowBatch(batch)
       batch.reset()
+      rowBatchSize = 0
   }
 
   /** writes a given row to a orc vertorized batch
@@ -67,17 +70,21 @@ class OrcWriter(
     *  @return a list of wasWriteSuccessful?. false = no true = yes.
     *          Each entry is a field
     */
-  def writeRow(rowFields: List[OrcField], columnVectorList: List[ColumnVector], rowIndex: Int): Boolean = {
+  def writeRow(rowFields: List[OrcField], columnVectorList: List[ColumnVector]): Boolean = {
     val wasFieldWriteSuccessfulList: List[Boolean] = rowFields.zipWithIndex.map{
       case (field: OrcField, columnIndex: Int) =>
-        if(writeField(field.value, columnVectorList(columnIndex), rowIndex))
+        if(writeField(field.value, columnVectorList(columnIndex), batch.size))
           true
         else
           false
     }
 
+    //batch size is a row count
     batch.size += 1
-    if(batch.size == batch.getMaxSize){
+    //the batch has a maximum size of 1024.
+    // Will count up for each row, each array entry and each map entry
+    rowBatchSize += 1
+    if(rowBatchSize >= batch.getMaxSize -1){
       writeBatch()
     }
 
@@ -101,9 +108,7 @@ class OrcWriter(
       case value: OrcBigInt => writeBigIntField(value, columnVector, index)
       case value: OrcString => writeStringField(value, columnVector, index)
       case value: OrcArray => writeArrayField(value, columnVector, index)
-      //case value: OrcMap =>
-        //Not implemented yet.
-        //writeMapField(value, columnVector, index)
+      case value: OrcMap => writeMapField(value, columnVector, index)
       case value: OrcBoolean => writeBooleanField(value, columnVector, index)
       case value: OrcChar => writeCharField(value, columnVector, index)
     }
@@ -192,9 +197,9 @@ class OrcWriter(
 
         list.getValue.map(orcType => {
           writeField(orcType, arrayColumnVector.child, arrayColumnVector.childCount)
-          batch.size += 1
+          rowBatchSize += 1
           arrayColumnVector.childCount += 1
-          if(batch.size == batch.getMaxSize){
+          if(rowBatchSize >= batch.getMaxSize -1){
             writeBatch()
           }
         })
@@ -222,12 +227,11 @@ class OrcWriter(
 
         //Add the keys and values
         mapKeys.map(orcType => {
-          println("MapChildCount: " + mapColumnVector.childCount)
           writeField(orcType, mapColumnVector.keys, mapColumnVector.childCount)
           writeField(map.getValue(orcType), mapColumnVector.values, mapColumnVector.childCount)
-          batch.size += 2
+          rowBatchSize += 2
           mapColumnVector.childCount += 1
-          if(batch.size >= batch.getMaxSize - 2){
+          if(batch.size >= batch.getMaxSize -1){
             writeBatch()
           }
         })

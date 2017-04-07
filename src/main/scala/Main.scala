@@ -9,7 +9,7 @@ import scala.util.Random
   */
 object Main extends App{
   val fields: List[OrcField] = List(
-    new OrcField("key1", new OrcString("sdfsdf"))/*,
+    new OrcField("key1", new OrcString("sdfsdf")),
     new OrcField("key2", new OrcBigInt(1)),
     new OrcField("key3", new OrcArray(
       List(
@@ -18,7 +18,7 @@ object Main extends App{
     )),
     new OrcField("key4", new OrcMap(
       Map(new OrcString("Bla") -> new OrcBigInt(3455))
-    ))*/
+    ))
   )
 
   val structSchema: OrcStruct = new OrcStruct(fields)
@@ -29,7 +29,7 @@ object Main extends App{
   val structList: List[OrcStruct] = List.tabulate(1000000)(index => {
     new OrcStruct(
       List(
-        new OrcField("key1", new OrcString("sdfssdfaasdfasdfdsafasdfdf"))/*,
+        new OrcField("key1", new OrcString("sdfssdfaasdfasdfdsafasdfdf")),
         new OrcField("key2", new OrcBigInt(Random.nextLong())),
         new OrcField("key3", new OrcArray(
           List(
@@ -47,7 +47,7 @@ object Main extends App{
             new OrcString("dfsfd") -> new OrcBigInt(Random.nextLong()),
             new OrcString("asdfasdf") -> new OrcBigInt(Random.nextLong())
           )
-        ))*/
+        ))
       )
     )
   })
