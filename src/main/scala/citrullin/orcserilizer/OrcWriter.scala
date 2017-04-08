@@ -41,7 +41,7 @@ class OrcWriter(
     *  @return a list of wasWriteSuccessful?. false = no true = yes.
     *          Each entry represents one row.
     */
-  def writeRows(
+  private def writeRows(
                  rows: List[List[OrcField]],
                  columnVectorList: List[ColumnVector],
                  batch: VectorizedRowBatch,
@@ -56,7 +56,7 @@ class OrcWriter(
     rowResult
   }
 
-  def writeBatch(): Unit = {
+  private def writeBatch(): Unit = {
       batch.cols = columnVectorList.toArray
       writer.addRowBatch(batch)
       batch.reset()
@@ -70,7 +70,7 @@ class OrcWriter(
     *  @return a list of wasWriteSuccessful?. false = no true = yes.
     *          Each entry is a field
     */
-  def writeRow(rowFields: List[OrcField], columnVectorList: List[ColumnVector]): Boolean = {
+  private def writeRow(rowFields: List[OrcField], columnVectorList: List[ColumnVector]): Boolean = {
     val wasFieldWriteSuccessfulList: List[Boolean] = rowFields.zipWithIndex.map{
       case (field: OrcField, columnIndex: Int) =>
         if(writeField(field.value, columnVectorList(columnIndex), batch.size))
@@ -103,7 +103,7 @@ class OrcWriter(
     *        e.g. row or in a array the position
     *  @return a boolean -> wasWriteSuccessful? true => yes false => no
     */
-  def writeField(value: OrcType, columnVector: ColumnVector, index: Int): Boolean = {
+  private def writeField(value: OrcType, columnVector: ColumnVector, index: Int): Boolean = {
     value match{
       case value: OrcBigInt => writeBigIntField(value, columnVector, index)
       case value: OrcString => writeStringField(value, columnVector, index)
@@ -120,7 +120,7 @@ class OrcWriter(
     *  @param columnVector a ColumnVector which holds the Orc file data for one column
     *  @return a boolean -> wasWriteSuccessful? true => yes false => no
     */
-  def writeBigIntField(bigIntValue: OrcBigInt, columnVector: ColumnVector, rowIndex: Int): Boolean ={
+  private def writeBigIntField(bigIntValue: OrcBigInt, columnVector: ColumnVector, rowIndex: Int): Boolean ={
     columnVector match{
       case columnVector:LongColumnVector =>
         columnVector.vector{rowIndex} = bigIntValue.getValue
@@ -137,7 +137,7 @@ class OrcWriter(
     *  @param columnVector a ColumnVector which holds the Orc file data for one column
     *  @return a boolean -> wasWriteSuccessful? true => yes false => no
     */
-  def writeBooleanField(booleanValue: OrcBoolean, columnVector: ColumnVector, rowIndex: Int): Boolean ={
+  private def writeBooleanField(booleanValue: OrcBoolean, columnVector: ColumnVector, rowIndex: Int): Boolean ={
     columnVector match{
       case columnVector:LongColumnVector =>
         columnVector.vector{rowIndex} = booleanValue.getValue
@@ -154,7 +154,7 @@ class OrcWriter(
     *  @param columnVector a ColumnVector which holds the Orc file data for one column
     *  @return a boolean -> wasWriteSuccessful? true => yes false => no
     */
-  def writeCharField(charValue: OrcChar, columnVector: ColumnVector, rowIndex: Int): Boolean ={
+  private def writeCharField(charValue: OrcChar, columnVector: ColumnVector, rowIndex: Int): Boolean ={
     columnVector match{
       case columnVector:BytesColumnVector =>
         columnVector.setVal(rowIndex, Array(charValue.getValue))
@@ -171,7 +171,7 @@ class OrcWriter(
     *  @param columnVector a ColumnVector which holds the Orc file data for one column
     *  @return a boolean -> wasWriteSuccessful? true => yes false => no
     */
-  def writeStringField(stringValue: OrcString, columnVector: ColumnVector, rowIndex: Int): Boolean = {
+  private def writeStringField(stringValue: OrcString, columnVector: ColumnVector, rowIndex: Int): Boolean = {
     columnVector match{
       case columnVector:BytesColumnVector =>
         columnVector.setVal(rowIndex, stringValue.getValue)
@@ -189,7 +189,7 @@ class OrcWriter(
     *               written with a Writer into a Orc File.
     *  @return a boolean. Were all writes successful? true -> yes false -> no
     */
-  def writeArrayField(list: OrcArray, columnVector: ColumnVector, rowIndex: Int): Boolean = {
+  private def writeArrayField(list: OrcArray, columnVector: ColumnVector, rowIndex: Int): Boolean = {
     columnVector match{
       case arrayColumnVector:ListColumnVector =>
         arrayColumnVector.lengths{rowIndex} = list.getValue.length
@@ -218,7 +218,7 @@ class OrcWriter(
     *               written with a Writer into a Orc File.
     *  @return a boolean. Were all writes successful? true -> yes false -> no
     */
-  def writeMapField(map: OrcMap, columnVector: ColumnVector, rowIndex: Int): Boolean = {
+  private def writeMapField(map: OrcMap, columnVector: ColumnVector, rowIndex: Int): Boolean = {
     columnVector match{
       case mapColumnVector:MapColumnVector =>
         val mapKeys: List[OrcType] = map.getValue.keySet.toList
