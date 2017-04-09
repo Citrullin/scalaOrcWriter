@@ -1,6 +1,6 @@
 package citrullin.orcwriter.examples
 
-import citrullin.orcwriter.OrcSerializer
+import citrullin.orcwriter.OrcWriterAPI
 import citrullin.orcwriter.types._
 
 /**
@@ -29,5 +29,5 @@ object WriteComplexMap extends App{
     ))
   })
 
-  OrcSerializer.createWriter("path/to/a/file.orc" , schema).write(data)
+  OrcWriterAPI.createWriter("path/to/a/file.orc" , schema).write(data)
 }

@@ -52,6 +52,7 @@ class OrcWriter(
       writeRow(value, columnVectorList)
     })
 
+    writer.addRowBatch(batch)
     writer.close()
     rowResult
   }
