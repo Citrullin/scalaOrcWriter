@@ -2,14 +2,10 @@
   * Created by citrullin on 4/7/17.
   */
 
-import citrullin.orcserilizer.types.{OrcMap, _}
-import citrullin.orcserilizer.OrcSchemaCreator
+import citrullin.orcwriter.types.{OrcMap, _}
+import citrullin.orcwriter.OrcSchemaCreator
 import org.apache.orc.TypeDescription
-import org.specs2.matcher._
 import scala.collection.JavaConverters._
-
-
-import scala.util.Random
 
 class OrcSchemaCreatorSpec extends org.specs2.mutable.Specification{
   "Simple type test" >> {
