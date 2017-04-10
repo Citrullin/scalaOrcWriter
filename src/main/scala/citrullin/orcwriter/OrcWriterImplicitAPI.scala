@@ -10,5 +10,7 @@ object OrcWriterImplicitAPI {
     def write(path: String): Boolean = {
       OrcWriterCreator.createWriter(path, structList.head).write(structList)
     }
+    def getJsonSchema: String = OrcSchemaCreator.createTypeDescription(structList.head).toJson
+    def getStringSchema: String = OrcSchemaCreator.createTypeDescription(structList.head).toString
   }
 }
