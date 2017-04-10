@@ -27,7 +27,7 @@ object OrcWriterCreator {
     )
     val columnVectorList: List[ColumnVector] = createColumnVectorList(structSchema.getValue, batch)
 
-    new OrcWriter(writer, batch, columnVectorList, configuration, path)
+    new OrcWriter(writer, batch, columnVectorList, configuration)
   }
 
   /** generate a List of ColumnVectors by a given List of OrcFields

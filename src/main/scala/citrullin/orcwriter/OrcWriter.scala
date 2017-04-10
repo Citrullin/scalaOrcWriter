@@ -3,7 +3,6 @@ package citrullin.orcwriter
 import citrullin.orcwriter.exceptions.{ErrorHandler, OrcSerializationException}
 import citrullin.orcwriter.types._
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.Path
 import org.apache.hadoop.hive.ql.exec.vector._
 import org.apache.orc.{OrcFile, TypeDescription, Writer}
 
@@ -12,8 +11,7 @@ import org.apache.orc.{OrcFile, TypeDescription, Writer}
   */
 class OrcWriter(
                  writer: Writer, batch: VectorizedRowBatch,
-                 columnVectorList: List[ColumnVector], configuration: Configuration,
-                 path: String
+                 columnVectorList: List[ColumnVector], configuration: Configuration
                ) {
   //If activated, orcWrite will write files
   var writeMode: Boolean = true
