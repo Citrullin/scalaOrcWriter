@@ -15,4 +15,6 @@ class OrcFloat(value: Any) extends OrcType{
     case value: Double  => value.toFloat
     case value: Float => value
   }
+
+  def getUncleanValue: Any = value
 }

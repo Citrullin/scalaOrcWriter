@@ -15,4 +15,6 @@ class OrcDouble(value: AnyVal) extends OrcType{
     case value: Double  => value
     case value: Float => value.toDouble
   }
+
+  def getUncleanValue: Any = value
 }

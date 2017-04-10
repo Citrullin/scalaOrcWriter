@@ -1,4 +1,4 @@
-package citrullin.orcwriter.examples
+package citrullin.orcwriter.examples.orcwriterapi
 
 import citrullin.orcwriter.OrcWriterAPI
 import citrullin.orcwriter.types._

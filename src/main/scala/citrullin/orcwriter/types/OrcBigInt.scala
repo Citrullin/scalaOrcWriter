@@ -15,4 +15,6 @@ class OrcBigInt(value: AnyVal) extends OrcType{
     case value: Long  => value
     case value: Int => value.toLong
   }
+
+  def getUncleanValue: Any = value
 }

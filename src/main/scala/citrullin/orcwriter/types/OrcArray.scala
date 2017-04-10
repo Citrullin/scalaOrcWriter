@@ -23,4 +23,6 @@ class OrcArray(val list: AnyRef) extends OrcType{
     case OrcArrayContainer(value) => value.toList
     case OrcIterableContainer(value) => value.toList
   }
+
+  def getUncleanValue: Any = list
 }

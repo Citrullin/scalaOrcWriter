@@ -3,18 +3,39 @@
   */
 
 import citrullin.orcwriter.types.{OrcMap, _}
-import citrullin.orcwriter.OrcSchemaCreator
+import citrullin.orcwriter.{OrcSchemaCreator, OrcWriter, OrcWriterCreator}
 import org.apache.orc.TypeDescription
 import org.specs2.matcher._
+
 import scala.collection.JavaConverters._
 
 class OrcWriterCreatorSpec extends org.specs2.mutable.Specification{
-  val simpleStringStruct: OrcStruct = new OrcStruct(
-    List(
-      new OrcField("test", new OrcString(""))
+  def getCurrentDirectory = new java.io.File(".").getCanonicalPath
+
+  "SimpleString test" >> {
+    val simpleStringStruct: OrcStruct = new OrcStruct(
+      List(
+        new OrcField("test", new OrcString(""))
+      )
     )
-  )
-  val typeDescription: TypeDescription = OrcSchemaCreator.createTypeDescription(simpleStringStruct)
 
+    val data: List[OrcStruct] = List.tabulate(100)(index => {
+      new OrcStruct(
+        List(
+          new OrcField("test", new OrcString(index.toString))
+        )
+      )
+    })
 
+    val orcWriter: OrcWriter = OrcWriterCreator.createWriter(getCurrentDirectory + "../resources/test.orc", simpleStringStruct)
+    orcWriter.writeMode = false
+
+    orcWriter.write(data)
+
+    "batch must have" >> {
+      "a length of 100" >> {
+        orcWriter.getBatch.count() mustEqual 100
+      }
+    }
+  }
 }

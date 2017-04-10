@@ -15,4 +15,6 @@ class OrcDecimal(value: Any) extends OrcType{
     case value: Double  => BigDecimal(value).setScale(2).toFloat
     case value: Float => BigDecimal(value).setScale(2).toFloat
   }
+
+  def getUncleanValue: Any = value
 }

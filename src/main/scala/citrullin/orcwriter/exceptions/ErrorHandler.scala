@@ -13,4 +13,9 @@ object ErrorHandler {
       "Actual Type: "+actualType.getClass+". "
     )
   }
+  def wrongOrcType(orcType: OrcType, usedType: Any): OrcSerializationException = {
+    new OrcSerializationException(
+      "Wrong OrcType." + usedType.getClass + " cannot used in " + orcType.getClass
+    )
+  }
 }

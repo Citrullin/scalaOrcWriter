@@ -1,5 +1,6 @@
 package citrullin.orcwriter
 
+import citrullin.orcwriter.exceptions.ErrorHandler
 import citrullin.orcwriter.types._
 import org.apache.orc.TypeDescription
 
@@ -11,7 +12,11 @@ object OrcSchemaCreator {
     val typeDescription: TypeDescription = TypeDescription.createStruct()
 
     struct.list.map(field =>
-      typeDescription.addField(field.key, getTypeDescriptionByField(field))
+      if(field.value.isValid){
+        typeDescription.addField(field.key, getTypeDescriptionByField(field))
+      }else{
+        ErrorHandler.wrongOrcType(field.value, field.value.getUncleanValue)
+      }
     )
 
     typeDescription

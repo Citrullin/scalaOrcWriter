@@ -6,4 +6,5 @@ package citrullin.orcwriter.types
 trait OrcType {
   def isValid: Boolean
   def getValue: Any
+  def getUncleanValue: Any
 }

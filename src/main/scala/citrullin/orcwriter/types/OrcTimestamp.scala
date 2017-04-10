@@ -15,4 +15,6 @@ class OrcTimestamp(value: Any) extends OrcType{
     case value: Long => value
     case value: java.util.Date => value.getTime
   }
+
+  def getUncleanValue: Any = value
 }

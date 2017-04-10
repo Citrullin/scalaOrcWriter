@@ -19,4 +19,6 @@ class OrcBoolean(value: Any) extends OrcType{
     case value: String =>
       if(value.isEmpty) 0L else 1L
   }
+
+  def getUncleanValue: Any = value
 }

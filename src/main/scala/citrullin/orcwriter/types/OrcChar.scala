@@ -15,4 +15,6 @@ class OrcChar(value: Any) extends OrcType{
     case value: Byte => value
     case value: String => value.toByte
   }
+
+  def getUncleanValue: Any = value
 }

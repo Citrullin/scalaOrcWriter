@@ -6,7 +6,7 @@ import org.apache.orc.TypeDescription
 /**
   * Created by citrullin on 25.03.17.
   */
-object OrcSerializer {
+object OrcWriterAPI {
   /** create a Orc C Schema String with a given OrcStruct
     *
     *  @param struct a OrcStruct which represents the schema

@@ -16,4 +16,6 @@ class OrcVarChar(value: Any) extends OrcType{
     case value: String => value.toCharArray.map(_.toByte)
     case value: Char => Array(value.toByte)
   }
+
+  def getUncleanValue: Any = value
 }

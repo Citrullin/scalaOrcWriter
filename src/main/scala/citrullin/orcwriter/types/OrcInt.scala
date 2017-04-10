@@ -6,4 +6,5 @@ package citrullin.orcwriter.types
 class OrcInt(value: Int) extends OrcType{
   def isValid: Boolean = true
   def getValue: Int = value
+  def getUncleanValue: Any = value
 }

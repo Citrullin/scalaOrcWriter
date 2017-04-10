@@ -1,4 +1,4 @@
-package citrullin.orcwriter.examples
+package citrullin.orcwriter.examples.orcwriterapi
 
 import citrullin.orcwriter.OrcWriterAPI
 import citrullin.orcwriter.types._
@@ -23,5 +23,5 @@ object WriteSimpleStrings extends App{
     )
   })
 
-  OrcWriterAPI.createWriter("path/to/a/file.orc" , schema).write(data)
+  OrcWriterAPI.createWriter("/home/citrullin/orcFiles/test2.orc" , schema).write(data)
 }

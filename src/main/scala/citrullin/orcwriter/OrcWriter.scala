@@ -15,7 +15,8 @@ class OrcWriter(
                  columnVectorList: List[ColumnVector], configuration: Configuration,
                  path: String
                ) {
-
+  //If activated, orcWrite will write files
+  var writeMode: Boolean = true
   var rowBatchSize: Int = 0
 
   /** writes a list of OrcStructs into a Orc File
@@ -31,6 +32,7 @@ class OrcWriter(
     ).exists(!_)
   }
 
+  def getBatch: VectorizedRowBatch = batch
 
   /** writes given rows to a orc vertorized batch
     *
@@ -53,7 +55,10 @@ class OrcWriter(
     })
 
     writer.addRowBatch(batch)
-    writer.close()
+    if(writeMode){
+      //Close the writer and write the orc file
+      writer.close()
+    }
     rowResult
   }
 

@@ -6,4 +6,5 @@ package citrullin.orcwriter.types
 class OrcStruct(val list: List[OrcField]) extends OrcType{
   def isValid: Boolean = true
   def getValue: List[OrcField] = list
+  def getUncleanValue: List[OrcField] = list
 }

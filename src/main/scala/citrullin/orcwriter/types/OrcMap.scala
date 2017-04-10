@@ -6,4 +6,5 @@ package citrullin.orcwriter.types
 class OrcMap(map: Map[OrcType, OrcType]) extends OrcType{
   def isValid: Boolean = true
   def getValue: Map[OrcType, OrcType] = map
+  def getUncleanValue: Any = map
 }

@@ -16,4 +16,6 @@ class OrcTinyInt(value: Any) extends OrcType{
     case value: Int => value.toByte
     case value: Short => value.toByte
   }
+
+  def getUncleanValue: Any = value
 }
