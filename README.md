@@ -65,7 +65,7 @@ library. The implicit API extend a OrcStruct List with a method write.
 | Orc type | Scala object |
 | -------- | ------------ |
 | array    | OrcArray     |
-| binary   | OrcChar      |
+| binary   | OrcBinary    |
 | bigint   | OrcBigInt    |
 | boolean  | OrcBoolean   |
 | char     | OrcChar      |
