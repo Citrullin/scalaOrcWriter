@@ -6,7 +6,7 @@ package citrullin.orcwriter.types
 class OrcBinary(value: Any) extends OrcType{
   def isValid: Boolean = {
     value match{
-      case String | Byte | Int | Long => true
+      case _:String | _:Byte | _:Int | _:Long => true
       case _ => false
     }
   }
