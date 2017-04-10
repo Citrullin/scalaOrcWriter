@@ -54,7 +54,7 @@ class OrcWriter(
 
     writer.addRowBatch(batch)
     if(writeMode){
-      //Close the writer and write the orc file
+      //Close the writer and write the content to the orc file
       writer.close()
     }
     rowResult
@@ -83,10 +83,11 @@ class OrcWriter(
           false
     }
 
-    //batch size is a row count
+    //batch size is only a row count
     batch.size += 1
-    //the batch has a maximum size of 1024.
-    // Will count up for each row, each array entry and each map entry
+    /** Will count up for each row, each array entry and each map entry.
+      * All of them extend the size of the batch.
+      * */
     rowBatchSize += 1
     if(rowBatchSize >= batch.getMaxSize -1){
       writeBatch()
@@ -199,7 +200,7 @@ class OrcWriter(
         arrayColumnVector.lengths{rowIndex} = list.getValue.length
         arrayColumnVector.offsets{rowIndex} = arrayColumnVector.childCount
 
-        list.getValue.map(orcType => {
+        list.getValue.foreach(orcType => {
           writeField(orcType, arrayColumnVector.child, arrayColumnVector.childCount)
           rowBatchSize += 1
           arrayColumnVector.childCount += 1
@@ -230,7 +231,7 @@ class OrcWriter(
         mapColumnVector.offsets{rowIndex} = mapColumnVector.childCount
 
         //Add the keys and values
-        mapKeys.map(orcType => {
+        mapKeys.foreach(orcType => {
           writeField(orcType, mapColumnVector.keys, mapColumnVector.childCount)
           writeField(map.getValue(orcType), mapColumnVector.values, mapColumnVector.childCount)
           rowBatchSize += 2

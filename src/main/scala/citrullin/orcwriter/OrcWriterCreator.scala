@@ -10,11 +10,11 @@ import org.apache.orc.{OrcFile, TypeDescription, Writer}
   * Created by citrullin on 29.03.17.
   */
 object OrcWriterCreator {
-  /** writes a list of OrcStructs into a Orc File
+  /** create a OrcWriter to write a list of OrcStructs to the actual orc file
     *
     *  @param path A string of a local path or hdfs
     *  @param structSchema A OrcStruct which represent the schema. Will be used to generate the schema.
-    *  @return a boolean. wasWriteSuccessful?. True -> yes, false -> no
+    *  @return a OrcWriter
     */
   def createWriter(path: String, structSchema: OrcStruct): OrcWriter = {
     val schema: TypeDescription = OrcSchemaCreator.createTypeDescription(structSchema)
@@ -56,36 +56,37 @@ object OrcWriterCreator {
   def createBatchColumnVectorInstances(orcType: OrcType, columnVector: ColumnVector): ColumnVector = {
     orcType match{
       case _:OrcInt | _:OrcBigInt | _:OrcSmallInt |
-           _:OrcTinyInt | _:OrcBoolean | _:OrcDate  =>
-        columnVector.asInstanceOf[LongColumnVector]
-      case _:OrcString | _:OrcChar | _:OrcVarChar =>
-        columnVector.asInstanceOf[BytesColumnVector]
-      case _:OrcDouble | _:OrcFloat =>
-        columnVector.asInstanceOf[DoubleColumnVector]
-      case orcArray:OrcArray =>
-        val listColumnVector: ListColumnVector = columnVector.asInstanceOf[ListColumnVector]
-        listColumnVector.child = createBatchColumnVectorInstances(
-          orcArray.getValue.head,
-          listColumnVector.child
-        )
-        listColumnVector
-      case _:OrcStruct =>
-        columnVector.asInstanceOf[StructColumnVector]
-      case _:OrcTimestamp =>
-        columnVector.asInstanceOf[TimestampColumnVector]
-      case orcMap:OrcMap =>
-        val mapColumnVector: MapColumnVector = columnVector.asInstanceOf[MapColumnVector]
-        mapColumnVector.keys = createBatchColumnVectorInstances(
-          orcMap.getValue.keySet.head,
-          mapColumnVector.keys
-        )
-        mapColumnVector.values = createBatchColumnVectorInstances(
-          orcMap.getValue.values.head,
-          mapColumnVector.values
-        )
-        mapColumnVector
-      case _:OrcDecimal =>
-        columnVector.asInstanceOf[DecimalColumnVector]
+           _:OrcTinyInt | _:OrcBoolean | _:OrcDate  => columnVector.asInstanceOf[LongColumnVector]
+      case _:OrcString | _:OrcChar | _:OrcVarChar => columnVector.asInstanceOf[BytesColumnVector]
+      case _:OrcDouble | _:OrcFloat => columnVector.asInstanceOf[DoubleColumnVector]
+      case orcArray:OrcArray => createListColumnVector(orcArray, columnVector)
+      case _:OrcStruct => columnVector.asInstanceOf[StructColumnVector]
+      case _:OrcTimestamp => columnVector.asInstanceOf[TimestampColumnVector]
+      case orcMap:OrcMap => createMapColumnVector(orcMap, columnVector)
+      case _:OrcDecimal => columnVector.asInstanceOf[DecimalColumnVector]
     }
   }
+
+  def createMapColumnVector(orcMap: OrcMap, columnVector: ColumnVector): MapColumnVector = {
+    val mapColumnVector: MapColumnVector = columnVector.asInstanceOf[MapColumnVector]
+    mapColumnVector.keys = createBatchColumnVectorInstances(
+      orcMap.getValue.keySet.head,
+      mapColumnVector.keys
+    )
+    mapColumnVector.values = createBatchColumnVectorInstances(
+      orcMap.getValue.values.head,
+      mapColumnVector.values
+    )
+    mapColumnVector
+  }
+
+  def createListColumnVector(orcArray: OrcArray, columnVector: ColumnVector): ListColumnVector = {
+    val listColumnVector: ListColumnVector = columnVector.asInstanceOf[ListColumnVector]
+    listColumnVector.child = createBatchColumnVectorInstances(
+      orcArray.getValue.head,
+      listColumnVector.child
+    )
+    listColumnVector
+  }
+
 }
