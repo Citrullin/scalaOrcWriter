@@ -34,7 +34,6 @@ class OrcWriterCreatorSpec extends org.specs2.mutable.Specification{
     orcWriter.writeMode = false
 
     orcWriter.write(data)
-    new File(path).delete()
 
     "batch must have" >> {
       "100 rows" >> {
@@ -53,6 +52,7 @@ class OrcWriterCreatorSpec extends org.specs2.mutable.Specification{
         countStrings mustEqual 100
       }
     }
+    new File(path).delete()
   }
 
   "ComplexMap test" >> {
