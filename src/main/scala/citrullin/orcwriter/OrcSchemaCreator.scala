@@ -29,6 +29,7 @@ object OrcSchemaCreator {
   def getTypeDescriptionByOrcType(orcType: OrcType): TypeDescription = {
     orcType match{
       case value: OrcBigInt => getBigIntTypeDescription(value)
+      case value: OrcBinary => getBinaryTypeDescription(value)
       case value: OrcDouble => getDoubleTypeDescription(value)
       case value: OrcString => getStringTypeDescription(value)
       case value: OrcTinyInt => getTinyIntTypeDescription(value)
@@ -45,6 +46,10 @@ object OrcSchemaCreator {
       case value: OrcInt => getIntTypeDescription(value)
       case value: OrcFloat => getFloatTypeDescription(value)
     }
+  }
+
+  def getBinaryTypeDescription(value: OrcBinary): TypeDescription = {
+    TypeDescription.createBinary()
   }
 
   def getBigIntTypeDescription(value: OrcBigInt): TypeDescription = {
