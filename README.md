@@ -1,13 +1,13 @@
-#Scala OrcWriter
+# Scala OrcWriter
 
 A simple Library to write orc files to the local file system or to hdfs.
 You can find some examples in citrullin.orcwriter.examples
 
-##Usage:
+## Usage:
 There are two ways to use the library. The implicit API or the standard
 library. The implicit API extend a OrcStruct List with a method write.
 
-###Implicit API
+### Implicit API
 
 ```scala
   import citrullin.orcwriter.OrcWriterImplicitAPI._
@@ -26,7 +26,7 @@ library. The implicit API extend a OrcStruct List with a method write.
   data.write("/home/citrullin/orcFiles/test.orc")
 ```
 
-###Standard API
+### Standard API
 ```scala
   import citrullin.orcwriter.OrcWriterAPI
   import citrullin.orcwriter.types._
@@ -51,7 +51,7 @@ library. The implicit API extend a OrcStruct List with a method write.
     .write(data)
 ```
 
-##Available OrcTypes:
+## Available OrcTypes:
 
 | Orc type | Scala object |
 | -------- | ------------ |
