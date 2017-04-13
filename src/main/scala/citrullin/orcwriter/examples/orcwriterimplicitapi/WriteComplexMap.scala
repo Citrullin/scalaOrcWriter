@@ -6,7 +6,7 @@ import citrullin.orcwriter.types.{OrcField, OrcMap, OrcString, OrcStruct}
 /**
   * Created by citrullin on 4/10/17.
   */
-class WriteComplexMap {
+object WriteComplexMap extends App{
   def getCurrentDirectory: String = new java.io.File(".").getCanonicalPath
 
   val data: List[OrcStruct] = List(
