@@ -7,6 +7,8 @@ import citrullin.orcwriter.types._
   * Created by citrullin on 09.04.17.
   */
 object WriteSimpleStrings extends App{
+  def getCurrentDirectory: String = new java.io.File(".").getCanonicalPath
+
   //Create a schema orcStruct object. Used the generate the orcSchema
   val schema: OrcStruct = new OrcStruct(
     List(
@@ -23,5 +25,6 @@ object WriteSimpleStrings extends App{
     )
   })
 
-  OrcWriterAPI.createWriter("/home/citrullin/orcFiles/test2.orc" , schema).write(data)
+  OrcWriterAPI.createWriter(getCurrentDirectory + "/tmp/orcFiles/explicit/WriteSimpleStrings.orc", schema)
+    .write(data)
 }

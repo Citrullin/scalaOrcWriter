@@ -7,17 +7,37 @@ import citrullin.orcwriter.types.{OrcField, OrcMap, OrcString, OrcStruct}
   * Created by citrullin on 4/10/17.
   */
 class WriteComplexMap {
-  val data: List[OrcStruct] = List.tabulate(100)(index => {
+  def getCurrentDirectory: String = new java.io.File(".").getCanonicalPath
+
+  val data: List[OrcStruct] = List(
     new OrcStruct(List(
       new OrcField("map", new OrcMap(
         Map(
-          new OrcString("key1") -> new OrcString("value1"),
-          new OrcString("key2") -> new OrcString("value2"),
-          new OrcString("key3") -> new OrcString("value3")
+          new OrcString("key1") -> new OrcString("object1"),
+          new OrcString("key2") -> new OrcString("object1"),
+          new OrcString("key3") -> new OrcString("object1")
+        )
+      ))
+    )),
+    new OrcStruct(List(
+      new OrcField("map", new OrcMap(
+        Map(
+          new OrcString("key1") -> new OrcString("object2"),
+          new OrcString("key2") -> new OrcString("object2"),
+          new OrcString("key3") -> new OrcString("object2")
+        )
+      ))
+    )),
+    new OrcStruct(List(
+      new OrcField("map", new OrcMap(
+        Map(
+          new OrcString("key1") -> new OrcString("object3"),
+          new OrcString("key2") -> new OrcString("object3"),
+          new OrcString("key3") -> new OrcString("object3")
         )
       ))
     ))
-  })
+  )
 
-  data.write("a/path/to/a/file.orc")
+  data.write(getCurrentDirectory + "/tmp/orcFiles/implicit/WriteComplexMap.orc")
 }

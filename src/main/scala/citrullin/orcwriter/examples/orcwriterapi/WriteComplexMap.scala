@@ -7,6 +7,8 @@ import citrullin.orcwriter.types._
   * Created by citrullin on 09.04.17.
   */
 object WriteComplexMap extends App{
+  def getCurrentDirectory: String = new java.io.File(".").getCanonicalPath
+
   //Create Schema.
   // It is needed to add, at minimum, one element (key, value) to the map, to get the type of the key and value
   val schema: OrcStruct = new OrcStruct(List(
@@ -29,5 +31,5 @@ object WriteComplexMap extends App{
     ))
   })
 
-  OrcWriterAPI.createWriter("path/to/a/file.orc" , schema).write(data)
+  OrcWriterAPI.createWriter(getCurrentDirectory + "/tmp/orcFiles/explicit/WriteComplexMap.orc", schema).write(data)
 }
